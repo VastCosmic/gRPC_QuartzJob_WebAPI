@@ -13,7 +13,6 @@ namespace Client
             var client = new SwitchApi.SwitchApiClient(channel);
 
             // 服务端测试
-
             // 模拟读
             var readReplySync = client.ExecRpcCommandSync(new Request { StrRequest = "Read test." });
             Console.WriteLine(readReplySync.StrRply);
