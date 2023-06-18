@@ -19,6 +19,7 @@ namespace GrpcService.Services
             {
                 StrRply = request.StrRequest + " ExecRpcCommandSync Reply."
             });
+            
         }
 
         public override Task<Reply> ExecRpcCommand(Request request, ServerCallContext context)
