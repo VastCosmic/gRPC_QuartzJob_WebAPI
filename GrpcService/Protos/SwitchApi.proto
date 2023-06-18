@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+option csharp_namespace = "SwitchService";
+
+service SwitchApi
+{
+    rpc ExecRpcCommandSync(Request) returns (Reply);
+    rpc ExecRpcCommand(Request) returns (Reply);
+
+}
+
+message Request
+{
+	string StrRequest = 1;
+}
+message Reply
+{
+	string StrRply = 1;
+}
