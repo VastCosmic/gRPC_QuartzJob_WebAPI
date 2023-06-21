@@ -1,11 +1,14 @@
 ﻿using Grpc.Net.Client;
+using Quartz;
+using Quartz.Impl;
+using QuartzJob;
 using SwitchService;
 
 namespace Client
 {
     internal class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
             // 新建一个Channel，监听地址
             var channel = GrpcChannel.ForAddress("https://localhost:7259");
@@ -36,6 +39,7 @@ namespace Client
             Console.WriteLine(stopReplySync.StrRply);
             var stopReply = client.ExecRpcCommand(new Request { StrRequest = "Stop test." });
             Console.WriteLine(stopReply.StrRply);
+
         }
     }
 }

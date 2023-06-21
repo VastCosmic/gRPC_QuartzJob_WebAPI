@@ -15,15 +15,16 @@ namespace GrpcService.Services
         // Override Reply Task
         public override Task<Reply> ExecRpcCommandSync(Request request, ServerCallContext context)
         {
+            Console.WriteLine("ExecRpcCommandSync");
             return Task.FromResult(new Reply
             {
                 StrRply = request.StrRequest + " ExecRpcCommandSync Reply."
             });
         }
 
-
         public override Task<Reply> ExecRpcCommand(Request request, ServerCallContext context)
         {
+            Console.WriteLine("ExecRpcCommand");
             return Task.FromResult(new Reply
             {
                 StrRply = request.StrRequest + " ExecRpcCommand Reply."
