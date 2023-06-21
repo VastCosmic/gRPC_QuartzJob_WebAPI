@@ -16,23 +16,26 @@ await scheduler.Start();
 
 // 新建一个任务
 var job = JobBuilder.Create<ReadCommandAsyncJob>()
-    .WithIdentity("job1", "group1")
+    .WithIdentity("ReadCommandAsyncJob", "ReadJob")
     .Build();
 
 // 新建一个触发器
 var trigger = TriggerBuilder.Create()
-    .WithIdentity("trigger1", "group1")
+    .WithIdentity("ReadCommandAsyncJobTrigger", "ReadTrigger")
     .StartNow()
     .WithSimpleSchedule(x => x
-           .WithIntervalInSeconds(1)
-                  .RepeatForever())
+        .WithInterval(TimeSpan.FromMilliseconds(500)) // 设置时间间隔为500ms
+        .RepeatForever()) // 无限重复
     .Build();
 
 // 将任务和触发器添加到调度器中
 await scheduler.ScheduleJob(job, trigger);
 
-// 等待5秒钟
-await Task.Delay(TimeSpan.FromSeconds(10));
+// 等待
+await Task.Delay(TimeSpan.FromSeconds(5));
+Console.WriteLine("5s LATER...");
+
+await scheduler.Interrupt(new JobKey("ReadCommandAsyncJob", "ReadJob"));
 
 // 关闭调度器
 await scheduler.Shutdown();
