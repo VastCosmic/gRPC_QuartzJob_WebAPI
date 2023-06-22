@@ -1,25 +1,27 @@
 ﻿using Grpc.Net.Client;
 using Quartz;
 using SwitchService;
-
-namespace Client.QuartzJob
+namespace Client.QuartzJob.Job
 {
     /// <summary>
-    /// 异步读命令任务
+    /// 写命令任务
     /// </summary>
-    internal class ReadCommandSyncAsyncJob : IJob
+    internal class WriteCommandJob : IJob
     {
         // 创建静态的Channel和Client
         private static readonly GrpcChannel channel = GrpcChannel.ForAddress("https://localhost:7259");
         private static readonly SwitchApi.SwitchApiClient client = new SwitchApi.SwitchApiClient(channel);
 
-        public async Task Execute(IJobExecutionContext context)
+        public Task Execute(IJobExecutionContext context)
         {
             try
             {
-                // 模拟异步读命令
-                var replyExecRpcCommandSyncAsync = await client.ExecRpcCommandSyncAsync(new Request { StrRequest = "ReadCommandSyncAsync" });
-                Console.WriteLine(replyExecRpcCommandSyncAsync.StrRply);
+                return Task.Factory.StartNew(() =>
+                {
+                    // 模拟写命令
+                    var replyExecRpcCommand = client.ExecRpcCommand(new Request { StrRequest = "WriteCommand" });
+                    Console.WriteLine(replyExecRpcCommand.StrRply);
+                });
             }
             catch (Exception ex)
             {
