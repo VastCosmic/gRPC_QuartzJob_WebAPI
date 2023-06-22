@@ -2,24 +2,28 @@
 using Quartz;
 using SwitchService;
 
-namespace Client.QuartzJob.Job
+namespace QuartzJob.Job
 {
     /// <summary>
     /// 异步读命令任务
     /// </summary>
-    internal class ReadCommandAsyncJob : IJob
+    public class ReadCommandAsyncJob : IJob
     {
-        // 创建静态的Channel和Client
-        private static readonly GrpcChannel channel = GrpcChannel.ForAddress("https://localhost:7259");
-        private static readonly SwitchApi.SwitchApiClient client = new SwitchApi.SwitchApiClient(channel);
-
         public async Task Execute(IJobExecutionContext context)
         {
+            // 从JobDataMap中获取监听地址
+            var dataMap = context.MergedJobDataMap;
+            var address = dataMap.GetString("address") ?? throw new ArgumentNullException("address");
+            // 创建Channel和Client
+            var channel = GrpcChannel.ForAddress(address);
+            var client = new SwitchApi.SwitchApiClient(channel);
+
             try
             {
                 // 模拟异步读命令
                 var replyExecRpcCommandAsync = await client.ExecRpcCommandAsync(new Request { StrRequest = "ReadCommandAsync" });
                 Console.WriteLine(replyExecRpcCommandAsync.StrRply);
+
             }
             catch (Exception ex)
             {

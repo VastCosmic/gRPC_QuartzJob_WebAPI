@@ -1,4 +1,4 @@
-﻿using Client.QuartzJob.Job;
+﻿using QuartzJob.Job;
 using Quartz.Impl;
 using Quartz;
 
@@ -12,12 +12,16 @@ namespace Client.QuartzJob
         /// <returns></returns>
         public static async Task Read()
         {
+            // 使用 https://localhost:7259 作为监听地址
+            var address = "https://localhost:7259";
+
             // 新建一个调度器
             var scheduler = await StdSchedulerFactory.GetDefaultScheduler().ConfigureAwait(false);
 
             // 新建一个任务
             var job = JobBuilder.Create<ReadCommandAsyncJob>()
                 .WithIdentity("ReadCommandAsyncJob", "ReadJob")
+                .UsingJobData("address", address)
                 .Build();
 
             // 新建一个触发器

@@ -1,4 +1,4 @@
-﻿using Client.QuartzJob.Job;
+﻿using QuartzJob.Job;
 using Quartz;
 using Quartz.Impl;
 
@@ -12,17 +12,21 @@ namespace Client.QuartzJob
         /// <returns></returns>
         public static async Task Write(string cronStr)
         {
+            // 使用 https://localhost:7259 作为监听地址
+            var address = "https://localhost:7259";
+
             // 新建一个调度器
             var scheduler = await StdSchedulerFactory.GetDefaultScheduler().ConfigureAwait(false);
 
             // 新建一个任务
             var job = JobBuilder.Create<WriteCommandAsyncJob>()
-                .WithIdentity("WriteCommandAsyncJob", "WriteJob") // 修改任务的Identity
+                .WithIdentity("WriteCommandAsyncJob", "WriteJob")
+                .UsingJobData("address", address)
                 .Build();
 
             // 新建一个触发器
             var trigger = TriggerBuilder.Create()
-                .WithIdentity("WriteCommandAsyncJobTrigger", "WriteTrigger") // 修改触发器的Identity
+                .WithIdentity("WriteCommandAsyncJobTrigger", "WriteTrigger")
                 .WithCronSchedule(cronStr) // 使用Cron表达式指定执行时间
                 .Build();
 
