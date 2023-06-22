@@ -18,7 +18,7 @@ namespace GrpcService.Services
             Console.WriteLine("ExecRpcCommandSync");
             return Task.FromResult(new Reply
             {
-                StrRply = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff") + " " + request.StrRequest + " ExecRpcCommandSync Reply."
+                StrRply = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff") + " ExecRpcCommandSync Reply." + request.StrRequest
             });
         }
 
@@ -27,7 +27,7 @@ namespace GrpcService.Services
             Console.WriteLine("ExecRpcCommand");
             return Task.FromResult(new Reply
             {
-                StrRply = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff") + " " + request.StrRequest + " ExecRpcCommand Reply."
+                StrRply = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff") + " ExecRpcCommand Reply." + request.StrRequest
             });
         }
     }

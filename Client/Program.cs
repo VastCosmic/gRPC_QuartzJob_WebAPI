@@ -39,13 +39,15 @@ await scheduler.Interrupt(new JobKey("ReadCommandAsyncJob", "ReadJob"));
 
 // 关闭调度器
 await scheduler.Shutdown();
-    
 
-// 服务端测试
+
+// gRPC客户端发送请求
 //var replyExecRpcCommandAsync = await client.ExecRpcCommandAsync(new Request { StrRequest = "This is ExecRpcCommandAsync test." });
 //Console.WriteLine(replyExecRpcCommandAsync.StrRply);
 //var replyExecRpcCommand = client.ExecRpcCommand(new Request { StrRequest = "This is ExecRpcCommand test." });
 //Console.WriteLine(replyExecRpcCommand.StrRply);
+//var replyExecRpcCommandSync = await client.ExecRpcCommandSyncAsync(new Request { StrRequest = "This is ExecRpcCommandSyncAsync test." });
+//Console.WriteLine(replyExecRpcCommandSync.StrRply);
 //var replyExecRpcCommandSync = client.ExecRpcCommandSync(new Request { StrRequest = "This is ExecRpcCommandSync test." });
 //Console.WriteLine(replyExecRpcCommandSync.StrRply);
 
