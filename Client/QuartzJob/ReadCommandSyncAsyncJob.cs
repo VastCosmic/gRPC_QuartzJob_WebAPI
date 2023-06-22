@@ -7,7 +7,7 @@ namespace Client.QuartzJob
     /// <summary>
     /// 异步读命令任务
     /// </summary>
-    internal class ReadCommandSyncAsyncJob
+    internal class ReadCommandSyncAsyncJob : IJob
     {
         // 创建静态的Channel和Client
         private static readonly GrpcChannel channel = GrpcChannel.ForAddress("https://localhost:7259");

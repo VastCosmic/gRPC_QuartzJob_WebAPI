@@ -1,10 +1,5 @@
 ﻿using Grpc.Net.Client;
 using Quartz;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using SwitchService;
 
 namespace Client.QuartzJob
@@ -12,7 +7,7 @@ namespace Client.QuartzJob
     /// <summary>
     /// 异步写命令任务
     /// </summary>
-    internal class WriteCommandAsyncJob
+    internal class WriteCommandAsyncJob : IJob
     {
         // 创建静态的Channel和Client
         private static readonly GrpcChannel channel = GrpcChannel.ForAddress("https://localhost:7259");
