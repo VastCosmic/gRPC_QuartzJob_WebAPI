@@ -1,15 +1,12 @@
 ﻿using Quartz.Impl;
 using Quartz;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using QuartzJob.Job;
-using System.Net;
 
 namespace QuartzJob.Command
 {
+    /// <summary>
+    /// 写命令
+    /// </summary>
     public class WriteCommand
     {
         // 监听地址

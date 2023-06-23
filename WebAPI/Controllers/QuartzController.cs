@@ -8,10 +8,12 @@ namespace WebAPI.Controllers
     public class QuartzController : ControllerBase
     {
         private readonly string _address;
+        private readonly ILogger<QuartzController> _logger;
 
-        public QuartzController(string address)
+        public QuartzController(string address, ILogger<QuartzController> logger)
         {
             _address = address;
+            _logger = logger;
         }
 
         [HttpGet("read/start")]
@@ -21,10 +23,12 @@ namespace WebAPI.Controllers
             {
                 new ReadCommand(_address);
                 await ReadCommand.Start();
+                _logger.LogInformation("Read command start successfully.");
                 return Ok(new { status = "ok" });
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Read command stop failed.");
                 return BadRequest(new { status = "error", message = ex.Message });
             }
         }
@@ -35,10 +39,12 @@ namespace WebAPI.Controllers
             try
             {
                 await ReadCommand.Stop();
+                _logger.LogInformation("Read command stop successfully.");
                 return Ok(new { status = "ok" });
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Read command stop failed.");
                 return BadRequest(new { status = "error", message = ex.Message });
             }
         }
@@ -56,14 +62,17 @@ namespace WebAPI.Controllers
             {
                 if (request.Cron == null)
                 {
+                    _logger.LogError("Cron can not be null !");
                     throw new InvalidOperationException("Cron can not be null !");
                 }
                 new WriteCommand(_address, request.Cron);
+                _logger.LogInformation("Write command start successfully.");
                 await WriteCommand.Start();
                 return Ok(new { status = "ok" });
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Write command start failed.");
                 return BadRequest(new { status = "error", message = ex.Message });
             }
         }
@@ -74,10 +83,12 @@ namespace WebAPI.Controllers
             try
             {
                 await WriteCommand.Stop();
+                _logger.LogInformation("Write command stop successfully.");
                 return Ok(new { status = "ok" });
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Write command stop failed.");
                 return BadRequest(new { status = "error", message = ex.Message });
             }
         }

@@ -6,6 +6,7 @@ var address="https://localhost:7259";
 
 new ReadCommand(address);
 Console.WriteLine("Try to ReadCommand! Input any key to end the job...");
+
 // Start the job
 await ReadCommand.Start();
 // Wait for user input before ending the job
