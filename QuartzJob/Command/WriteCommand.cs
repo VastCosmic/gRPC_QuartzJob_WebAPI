@@ -34,10 +34,6 @@ namespace QuartzJob.Command
         /// <returns></returns>
         public static async Task Start()
         {
-            if (scheduler == null)
-            {
-                throw new InvalidOperationException("Scheduler can not be null");
-            }
             if (Address == null)
             {
                 throw new InvalidOperationException("Address can not be null");
@@ -45,6 +41,10 @@ namespace QuartzJob.Command
             if (CronStr == null)
             {
                 throw new InvalidOperationException("CronStr can not be null");
+            }
+            if (scheduler == null)
+            {
+                throw new InvalidOperationException("Scheduler can not be null");
             }
 
             // 新建一个任务
@@ -77,7 +77,7 @@ namespace QuartzJob.Command
         {
             if (scheduler == null)
             {
-                throw new InvalidOperationException("null scheduler");
+                throw new InvalidOperationException("Scheduler can not be null");
             }
             await scheduler.Shutdown().ConfigureAwait(false);
         }
