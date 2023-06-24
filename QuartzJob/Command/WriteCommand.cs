@@ -1,6 +1,7 @@
 ﻿using Quartz.Impl;
 using Quartz;
 using QuartzJob.Job;
+using QuartzJob.Trigger;
 
 namespace QuartzJob.Command
 {
@@ -18,6 +19,11 @@ namespace QuartzJob.Command
         // 调度器
         private static IScheduler? scheduler;
 
+        /// <summary>
+        /// 写命令构造函数，要传入监听的gRPC服务器地址、Cron表达式
+        /// </summary>
+        /// <param name="address">监听的gRPC服务器地址</param>
+        /// <param name="cronStr">Cron表达式</param>
         public WriteCommand(string address, string cronStr)
         {
             Address = address;
@@ -45,25 +51,19 @@ namespace QuartzJob.Command
             }
 
             // 新建一个任务
-            var job = JobBuilder.Create<WriteCommandAsyncJob>()
+            var jobDetail = JobBuilder.Create<WriteCommandAsyncJob>()
                 .WithIdentity("WriteCommandAsyncJob", "WriteJob")
                 .UsingJobData("address", Address)
                 .Build();
 
             // 新建一个触发器
-            var trigger = TriggerBuilder.Create()
-                .WithIdentity("WriteCommandAsyncJobTrigger", "WriteTrigger")
-                .WithCronSchedule(CronStr) // 使用Cron表达式指定执行时间
-                .Build();
+            var jobTrigger = WriteCommandTrigger.Create(CronStr);
 
             // 将任务和触发器添加到调度器中
-            await scheduler.ScheduleJob(job, trigger).ConfigureAwait(false);
+            await scheduler.ScheduleJob(jobDetail, jobTrigger).ConfigureAwait(false);
 
             // 开启调度器
             await scheduler.Start().ConfigureAwait(false);
-
-            // 等待
-            //await Task.Delay(Timeout.Infinite).ConfigureAwait(false);
         }
 
         /// <summary>

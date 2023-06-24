@@ -7,6 +7,7 @@ namespace QuartzJob.Job
     /// <summary>
     /// 写命令任务
     /// </summary>
+    [DisallowConcurrentExecution]
     public class WriteCommandSyncJob : IJob
     {
         public Task Execute(IJobExecutionContext context)

@@ -28,7 +28,7 @@ namespace WebAPI.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Read command stop failed.");
+                _logger.LogError(ex, "Read command start failed.");
                 return BadRequest(new { status = "error", message = ex.Message });
             }
         }

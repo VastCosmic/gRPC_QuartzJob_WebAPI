@@ -1,3 +1,7 @@
+using Microsoft.Extensions.DependencyInjection;
+using SqlSugar;
+using WebAPI.DB;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.Z
@@ -7,7 +11,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // 注入gRPC服务端监听地址
-builder.Services.AddSingleton<string>("https://localhost:7259");
+var addressListener = new AddressListener(1);
+builder.Services.AddSingleton<string>(addressListener.Url);
 
 // 注入日志服务
 builder.Services.AddLogging(builder =>

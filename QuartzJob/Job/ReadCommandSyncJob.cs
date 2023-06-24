@@ -7,6 +7,7 @@ namespace QuartzJob.Job
     /// <summary>
     /// 读命令任务
     /// </summary>
+    [DisallowConcurrentExecution]
     public class ReadCommandSyncJob : IJob
     {
         public Task Execute(IJobExecutionContext context)

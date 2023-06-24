@@ -1,6 +1,8 @@
 ﻿using QuartzJob.Job;
 using Quartz.Impl;
 using Quartz;
+using System.Collections.Specialized;
+using QuartzJob.Trigger;
 
 namespace QuartzJob.Command
 {
@@ -11,10 +13,13 @@ namespace QuartzJob.Command
     {
         // 监听地址
         private static string? Address { get; set; }
-
         // 调度器
-        private static IScheduler? scheduler; 
+        private static IScheduler? scheduler;
 
+        /// <summary>
+        /// 读命令构造函数，要传入监听的gRPC服务器地址
+        /// </summary>
+        /// <param name="address">监听的gRPC服务器地址</param>
         public ReadCommand(string address)
         {
             Address = address;
@@ -34,32 +39,22 @@ namespace QuartzJob.Command
             if (scheduler == null)
             {
                 throw new InvalidOperationException("Scheduler can not be null");
-            }
-
+            }          
+            
             // 新建一个任务
-            var job = JobBuilder.Create<ReadCommandAsyncJob>()
+            var jobDetail = JobBuilder.Create<ReadCommandAsyncJob>()
                 .WithIdentity("ReadCommandAsyncJob", "ReadJob")
                 .UsingJobData("address", Address)
                 .Build();
 
             // 新建一个触发器
-            var trigger = TriggerBuilder.Create()
-                .WithIdentity("ReadCommandAsyncJobTrigger", "ReadTrigger")
-                .StartNow()
-                .WithSimpleSchedule(x => x
-                    .WithInterval(TimeSpan.FromMilliseconds(500)) // 设置时间间隔为500ms
-                    .RepeatForever()
-                )
-                .Build();
+            var jobTrigger = ReadCommandTrigger.Create();
 
             // 将任务和触发器添加到调度器中
-            await scheduler.ScheduleJob(job, trigger).ConfigureAwait(false);
-
+            await scheduler.ScheduleJob(jobDetail, jobTrigger).ConfigureAwait(false);
+           
             // 开启调度器
             await scheduler.Start().ConfigureAwait(false);
-
-            // 等待
-            //await Task.Delay(Timeout.Infinite).ConfigureAwait(false);
         }
 
         /// <summary>
