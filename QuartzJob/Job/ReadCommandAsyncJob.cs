@@ -24,7 +24,6 @@ namespace QuartzJob.Job
                 // 模拟异步读命令
                 var replyExecRpcCommandAsync = await client.ExecRpcCommandAsync(new Request { StrRequest = "ReadCommandAsync" });
                 Console.WriteLine(replyExecRpcCommandAsync.StrRply);
-
             }
             catch (Exception ex)
             {

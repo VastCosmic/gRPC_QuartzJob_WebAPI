@@ -1,6 +1,6 @@
 ﻿using Microsoft.Data.Sqlite;
+using SQLitePCL;
 using SqlSugar;
-using System.Security.Policy;
 
 namespace WebAPI.DB
 {
