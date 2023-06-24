@@ -17,8 +17,6 @@ namespace QuartzJob.Command
         private static string? Address { get; set; }
         // 调度器
         private static IScheduler? scheduler;
-        // 配置
-        private static IConfiguration? configuration;
 
         /// <summary>
         /// 读命令构造函数，要传入监听的gRPC服务器地址
@@ -27,16 +25,7 @@ namespace QuartzJob.Command
         public ReadCommand(string address)
         {
             Address = address;
-
-            var builder = new ConfigurationBuilder();
-            builder.AddJsonFile("N:\\VC_VS_PROJECT\\ebara\\QuartzJob\\appsettings.Development.json");
-            configuration = builder.Build();
-
-            // 获取调度器工厂实例
-            var schedulerFactory = new StdSchedulerFactory(configuration.GetSection("Quartz").Get<NameValueCollection>());
-
-            // 获取调度器实例
-            scheduler = schedulerFactory.GetScheduler().Result;
+            scheduler = StdSchedulerFactory.GetDefaultScheduler().Result;
         }
 
         /// <summary>
